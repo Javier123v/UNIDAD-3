@@ -1,0 +1,67 @@
+import random
+
+# Lista de palabras para el juego
+palabras = ["python", "programacion", "ahorcado", "condicionales", "bucles"]
+
+def elegir_palabra(palabras):
+    # Elige una palabra aleatoria de la lista
+    return random.choice(palabras)
+
+def mostrar_estado(palabra, letras_adivinadas):
+    # Muestra el estado actual de la palabra adivinada
+    estado = ""
+    for letra in palabra:
+        if letra in letras_adivinadas:
+            estado += letra
+        else:
+            estado += "_"
+    return estado
+
+def juego_ahorcado():
+    print("¡Bienvenido al juego del Ahorcado!")
+    
+    palabra = elegir_palabra(palabras)
+    letras_adivinadas = []
+    intentos_fallidos = 0
+    max_intentos = 6
+
+    while True:
+        estado_actual = mostrar_estado(palabra, letras_adivinadas)
+        print(f"\nPalabra: {estado_actual}")
+        print(f"Intentos fallidos: {intentos_fallidos}/{max_intentos}")
+        
+        # Verificar si el jugador ha ganado
+        if "_" not in estado_actual:
+            print("¡Felicidades! Has adivinado la palabra.")
+            break
+        
+        # Verificar si el jugador ha perdido
+        if intentos_fallidos >= max_intentos:
+            print(f"Lo siento, has perdido. La palabra era '{palabra}'.")
+            break
+        
+        # Pedir al jugador que adivine una letra
+        letra = input("Adivina una letra: ").lower()
+
+        # Validar la entrada del usuario
+        if len(letra) != 1 or not letra.isalpha():
+            print("Por favor, ingresa una letra válida.")
+            continue
+        
+        # Verificar si la letra ya ha sido adivinada
+        if letra in letras_adivinadas:
+            print("Ya has adivinado esa letra. Intenta con otra.")
+            continue
+        
+        # Agregar la letra a la lista de letras adivinadas
+        letras_adivinadas.append(letra)
+        
+        # Verificar si la letra está en la palabra
+        if letra in palabra:
+            print("¡Bien hecho! La letra está en la palabra.")
+        else:
+            print("Lo siento, la letra no está en la palabra.")
+            intentos_fallidos += 1
+
+# Llamar a la función principal para iniciar el juego
+juego_ahorcado()
